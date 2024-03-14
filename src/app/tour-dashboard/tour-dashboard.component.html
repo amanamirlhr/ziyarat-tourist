@@ -1,0 +1,74 @@
+<div class="row mb-5">
+    <div class="col-4">
+        <div class="card border-0 card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Total Tourist</h1>
+                    </div>
+                    <div class="col-5">
+                        <i class="fa fa-users dashboard_Tiles_Icons" aria-hidden="true"></i>
+
+                    </div>
+                    <div class="col-7 text-end">
+                        <h1 class="mb-0 dashboard_tiles_count"><b>{{ totalUsers }}</b></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card border-0 card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Total Tours</h1>
+                    </div>
+                    <div class="col-5">
+                        <i class="fa fa-plane dashboard_Tiles_Icons" aria-hidden="true"></i>
+
+                    </div>
+                    <div class="col-7 text-end">
+                        <h1 class="mb-0 dashboard_tiles_count"><b>{{ totalTours }}</b></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card border-0 card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Total Countries</h1>
+                    </div>
+                    <div class="col-5">
+                        <i class="fa fa-globe dashboard_Tiles_Icons" aria-hidden="true"></i>
+
+                    </div>
+                    <div class="col-7 text-end">
+                        <h1 class="mb-0 dashboard_tiles_count"><b>{{ totalCountry }}</b></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-6">
+        <div id="#chart-1">
+            <apx-chart [series]="series" [chart]="chart" [dataLabels]="dataLabels" [plotOptions]="plotOptions"
+                [yaxis]="yaxis" [legend]="legend" [fill]="fill" [stroke]="stroke" [tooltip]="tooltip"
+                [xaxis]="xaxis"></apx-chart>
+        </div>
+    </div>
+    <div class="col-6">
+        <div id="chart">
+            <apx-chart [series]="touriestseries" [chart]="touriestchart" [stroke]="tourieststroke"
+                [dataLabels]="touriestdataLabels" [plotOptions]="touriestplotOptions" [xaxis]="touriestxaxis"
+                [colors]="touriestcolors" [fill]="touriestfill"
+                [legend]="touriestlegend"></apx-chart>
+        </div>
+    </div>
+</div>

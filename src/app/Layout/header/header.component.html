@@ -1,0 +1,76 @@
+<div id="app">
+  
+  <!-- <div id="wrapper" [class.toggled]="toggled">
+    <aside id="sidebar-wrapper">
+      <div class="sidebar-brand">
+        <img id="logo_image_width" [class.logoimage]="marginleft" src="../assets/Images/images-removebg-preview.png"/>
+      </div>
+      <ul class="sidebar-nav" routerLinkActive="active">
+        <li>
+          <a href="/home" routerLink="home"><i class="fa fa-plane"></i>Tours</a>
+        </li>
+        <li>
+          <a href="/user" routerLink="user"><i class="fa fa-plug"></i>Plugins</a>
+        </li>
+        <li>
+          <a href="/user" routerLink="user"><i class="fa fa-user"></i>Users</a>
+        </li>
+      </ul>
+    </aside>
+    <nav class="navbar navbar-expand shadow navbar-height">
+      <a class="navbar-brand ms-3 toggled-sidebar text-body" (click)="toggleClass()" id="sidebar-toggle"><i class="fa fa-bars"></i></a>
+      <a href="#" class="navbar-brand text-body">Ziyarat</a>
+      <ul class="navbar-nav mr-auto" routerLinkActive="active">
+        <li class="nav-item">
+          <a href="/tours" class="nav-link text-body" routerLink="home">Tours </a>
+        </li>
+        <li class="nav-item">
+          <a href="/user" class="nav-link text-body" *ngIf="isLoggedIn" routerLink="user">User</a>
+        </li>
+      </ul>
+  
+      <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+        <li class="nav-item">
+          <a href="/login" class="nav-link text-body" routerLink="login">Login</a>
+        </li>
+      </ul>
+  
+      <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
+        <li class="nav-item">
+          <a href="/profile" class="nav-link" routerLink="profile">{{ email }}</a>
+        </li>
+        <li class="nav-item">
+          <a href class="nav-link" (click)="logout()">LogOut</a>
+        </li>
+      </ul>
+    </nav>
+
+    <section id="content-wrapper">
+      <router-outlet></router-outlet>
+    </section>
+
+  </div> -->
+  <!-- <mat-drawer-container class="example-container" [hasBackdrop]="hasBackdrop.value">
+    <mat-drawer #drawer [mode]="mode.value">I'm a drawer</mat-drawer>
+    <mat-drawer-content>
+      <mat-form-field>
+        <mat-label>Sidenav mode</mat-label>
+        <mat-select #mode value="side">
+          <mat-option value="side">Side</mat-option>
+          <mat-option value="over">Over</mat-option>
+          <mat-option value="push">Push</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Has backdrop</mat-label>
+        <mat-select #hasBackdrop>
+          <mat-option>Unset</mat-option>
+          <mat-option [value]="true">True</mat-option>
+          <mat-option [value]="false">False</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
+    </mat-drawer-content>
+  </mat-drawer-container> -->
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,58 @@
+.Touriest_container {
+  min-height: 100%;
+  height: auto;
+ 
+  }
+  .example-sidenav-content {
+    display: block;
+    height: 100%;
+    margin: 20px;
+  }
+  .header_primary_color{
+    color: black;
+    margin-left: 25px;
+  }
+  .sidebar_primary_color{
+    color: white !important;
+  }
+
+  .Touriest_sidenav {
+     user-select: none;
+     background-color: #fff;
+  }
+  .full-width {
+    width: 100%;
+  }
+  .menu-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+  }
+  .menu-button.rotated {
+    transform: rotate(180deg);
+  }
+  .submenu {
+    overflow-y: hidden;
+    transition: transform 300ms ease;
+    transform: scaleY(0);
+    transform-origin: top;
+    padding-left: 30px;
+  }
+  .submenu.expanded {
+    transform: scaleY(1);
+  }
+.example_toolbar{
+  background-color: #fff;
+  border-bottom: 1px solid #eeeeee;
+}
+.logo_header_css{
+  filter: brightness(0);
+  width: 150px;
+}
+.user-view-header{
+  margin-left: auto;
+  color: white !important;
+  background-color:#7f56d9 !important ;
+}
+.parent:hover .sidebaricons{
+color: white;
+}

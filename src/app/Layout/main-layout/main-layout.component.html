@@ -1,0 +1,45 @@
+<mat-toolbar class="example_toolbar">
+    <img class="logo_header_css" src="../../../assets/Images/Log-Ziyara.png" width="200" alt="Ziyarat Logo" />
+    <button mat-icon-button class="header_primary_color"
+        (click)="isExpanded = !isExpanded"><mat-icon>menu</mat-icon></button>
+    <button class="user-view-header" mat-button [matMenuTriggerFor]="menu" #menuTrigger>Menu</button>
+
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item><i class="fa fa-user-circle-o" aria-hidden="true"></i> Profile</button>
+        <a mat-menu-item href="/login"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+    </mat-menu>
+</mat-toolbar>
+<mat-sidenav-container class="Touriest_container" autosize>
+    <mat-sidenav #sidenav class="Touriest_sidenav" mode="side" opened="true" (mouseenter)="mouseenter()"
+        (mouseleave)="mouseleave()">
+        <mat-nav-list>
+            <mat-list-item class="parent">
+                <i class="fa fa-tachometer sidebaricons"></i> <span class="full-width" *ngIf="isExpanded || isShowing"><a
+                        mat-list-item class="sidebar_primary_color" href="/dashboard"> Dashboard</a></span>
+            </mat-list-item>
+            <mat-list-item class="parent">
+                <i class="fa fa-plane sidebaricons"></i> <span class="full-width" *ngIf="isExpanded || isShowing"><a
+                        mat-list-item class="sidebar_primary_color" href="/tours"> Tours</a></span>
+            </mat-list-item>
+            <mat-list-item class="parent">
+                <i class="fa fa-users sidebaricons"></i> <span class="full-width" *ngIf="isExpanded || isShowing"><a
+                        mat-list-item class="sidebar_primary_color" href="/touriest">Tourist</a></span>
+            </mat-list-item>
+            <mat-list-item class="parent">
+                <i class="fa fa-globe sidebaricons"></i> <span class="full-width" *ngIf="isExpanded || isShowing"><a
+                        mat-list-item class="sidebar_primary_color" href="/countries">Countries</a></span>
+            </mat-list-item>
+            <mat-list-item class="parent">
+                <i class="fa fa-credit-card-alt sidebaricons"></i> <span class="full-width" *ngIf="isExpanded || isShowing"><a
+                        mat-list-item class="sidebar_primary_color" href="/expenses">Expenses</a></span>
+            </mat-list-item>
+        </mat-nav-list>
+        <mat-nav-list>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <div class="example-sidenav-content">
+        <router-outlet></router-outlet>
+    </div>
+
+</mat-sidenav-container>

@@ -1,0 +1,36 @@
+.login_card_css {
+    max-width: 600px;
+    min-width: 300px;
+    width: 500px;
+}
+
+.login-main-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #def1f0 !important;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.login_color {
+    background-color: #0c3a53 !important;
+    color: white !important;
+    width: 80%;
+    margin: auto;
+}
+
+.logo_image_css {
+    text-align: center;
+}
+
+.login_card_body_css {
+    padding: 40px 20px;
+}
+
+.login-fotter-action {
+    padding: 0px 0px 40px 0px;
+}

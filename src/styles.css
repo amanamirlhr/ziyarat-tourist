@@ -1,0 +1,79 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~node_modules/font-awesome/css/font-awesome.css";
+@import "~bootstrap/dist/css/bootstrap.css";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #eeeeee;
+}
+
+.Page-Title .mat-grid-tile-content {
+  justify-content: left !important;
+}
+
+.Page-Title-button .mat-grid-tile-content {
+  justify-content: right !important;
+}
+
+.mat-mdc-dialog-actions {
+  justify-content: space-between !important;
+  padding: 10px 24px !important;
+}
+
+.mat-drawer-content {
+  overflow: unset !important;
+}
+
+mat-list-item .mdc-list-item__primary-text {
+  color: black !important;
+}
+
+mat-list-item:hover {
+  background-color: #7f56d9 !important;
+  padding: 25px;
+  border-radius: 10px;
+}
+mat-nav-list.mat-mdc-nav-list{
+  margin: 0px 10px;
+}
+mat-list-item{
+  padding: 0px 25px !important;
+}
+mat-list-item span:hover .mdc-list-item__primary-text,
+mat-list-item:hover .sidebar_primary_color,
+mat-list-item:hover .mat-mdc-list-item-unscoped-content {
+  color: white !important;
+}
+
+/* .mat-elevation-z8{
+    overflow: auto;
+    max-height: 700px;
+  } */
+.main_heading_colors {
+  background-color: #0c3a53 !important;
+  color: white !important;
+}
+
+.sidebaricons {
+  color: black;
+}
+
+.parent .mat-mdc-list-item-unscoped-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+/* .main_heading_colors:hover{
+    background-color: #def1f0!important;
+    color: black !important;
+  } */
+/* .mat-mdc-row{
+    height: 20px !important;
+  } */

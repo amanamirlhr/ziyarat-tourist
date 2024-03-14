@@ -1,0 +1,13 @@
+.main-div-text{
+   width: 50%;
+}
+.main-div-text mat-form-field {
+    width: 98%;
+ }
+.main-css-div-text{
+    display: flex;
+    
+}
+.add-edit-tour-detail{
+    padding-top: 10px !important;
+}

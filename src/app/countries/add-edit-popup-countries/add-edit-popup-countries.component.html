@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Add Tours</h1>
+<div mat-dialog-content>
+
+    <div class="countries_popup_body">
+          <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Placeholder">
+        </mat-form-field>
+    </p>
+    <mat-form-field>
+        <mat-label>IsActive</mat-label>
+        <mat-select>
+            <mat-option *ngFor="let isActive of isActives" [value]="isActive.value">
+                {{isActive.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button mat-raised-button class="main_heading_colors">Save</button>
+</div>

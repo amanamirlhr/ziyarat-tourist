@@ -1,0 +1,16 @@
+#chart-1 #apexchartsoq0t650a{
+width: 100% !important;
+}
+.card.border-0.card.shadow:hover .row .col-12,.card.border-0.card.shadow:hover .row .col-5,.card.border-0.card.shadow:hover .row .col-7 {
+    color: white;
+}
+.card.border-0.card.shadow:hover {
+    background-color: #7f56d9;
+}
+.dashboard_Tiles_Icons{
+    font-size: 43px;
+}
+.dashboard_tiles_count{
+    font-size: 50px;
+    font-family: fantasy;
+}

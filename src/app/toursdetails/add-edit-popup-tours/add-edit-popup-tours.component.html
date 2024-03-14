@@ -1,0 +1,52 @@
+<h1 mat-dialog-title>Add Tours</h1>
+<form [formGroup]="empform"  (ngSubmit)="onFormSubmit()">
+<div mat-dialog-content class="add-edit-tour-detail">
+    <div class="main-css-div-text">
+        <p class="main-div-text">
+            <mat-form-field appearance="outline">
+                <mat-label>Title</mat-label>
+                <input matInput placeholder="Enter Title" name="title" formControlName="title">
+            </mat-form-field>
+        </p>
+        <p class="main-div-text">
+            <mat-form-field appearance="outline">
+                <mat-label>Description</mat-label>
+                <input matInput placeholder="Enter Description" name="description" formControlName="description">
+            </mat-form-field>
+        </p>
+    </div>
+    <div class="main-css-div-text">
+        <p class="main-div-text">
+            <mat-form-field class="main-div-text" appearance="outline">
+                <mat-label>Select Country</mat-label>
+                <mat-select [(ngModel)]="selectedOptions" name="selectcountry" formControlName="selectcountry" multiple>
+                    <mat-option *ngFor="let option of options" [value]="option">{{ option }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </p>
+        <p class="main-div-text">
+            <mat-form-field appearance="outline">
+                <mat-label>Start date</mat-label>
+                <input matInput [matDatepicker]="pickerStart" name="startDate" formControlName="startDate">
+                <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                <mat-datepicker #pickerStart></mat-datepicker>
+            </mat-form-field>
+        </p>
+    </div>
+    <div class="main-css-div-text">
+        <p class="main-div-text">
+            <mat-form-field appearance="outline">
+                <mat-label>End date</mat-label>
+                <input matInput [matDatepicker]="pickerEnd" name="endDate" formControlName="endDate">
+                <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                <mat-datepicker #pickerEnd></mat-datepicker>
+            </mat-form-field>
+        </p>
+    </div>
+    
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button mat-raised-button class="main_heading_colors">Save</button>
+</div>
+</form>

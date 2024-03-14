@@ -1,0 +1,12 @@
+.start-date{
+    margin-right: 10px;
+}
+.end-date{
+    margin-left: 10px;
+}
+.countries_popup_body{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 15px;
+}
