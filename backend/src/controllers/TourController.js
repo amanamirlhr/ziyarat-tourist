@@ -6,10 +6,11 @@ const createTour = async (req, res) => {
   const transaction = await db.sequelize.transaction();
 
   try {
-    const { title, description, startDate, endDate } = req.body;
+    const { title, description,country, startDate, endDate } = req.body;
     const tourObj = {
       title,
       description,
+      country,
       startDate,
       endDate,
       // CreatedById: req.user.userId,

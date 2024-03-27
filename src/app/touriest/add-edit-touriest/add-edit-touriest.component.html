@@ -51,7 +51,6 @@
             </p>
         </div>
         <div class="footer-buttons-touriest">
-            <!-- <button mat-raised-button (click)="saveEdit()">Update</button> Add this button for saving the edit -->
             <button mat-raised-button  type="submit" [disabled]="empform.invalid" class="main_heading_colors">{{ isEditMode ? 'Update' : 'Add' }}</button>
         </div>
     </form>
@@ -59,37 +58,33 @@
     <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource">
 
-            <!-- Position Column -->
             <ng-container matColumnDef="tbname">
                 <th mat-header-cell *matHeaderCellDef> Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.tbname}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.tbname}} </td>
             </ng-container>
 
-            <!-- Name Column -->
             <ng-container matColumnDef="tbemail">
                 <th mat-header-cell *matHeaderCellDef> Email </th>
-                <td mat-cell *matCellDef="let element"> {{element.tbemail}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.tbemail}} </td>
             </ng-container>
 
-            <!-- Weight Column -->
             <ng-container matColumnDef="tbcnic">
                 <th mat-header-cell *matHeaderCellDef> CNIC </th>
-                <td mat-cell *matCellDef="let element"> {{element.tbcnic}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.tbcnic}} </td>
             </ng-container>
 
-            <!-- Symbol Column -->
             <ng-container matColumnDef="tbage">
                 <th mat-header-cell *matHeaderCellDef> Age </th>
-                <td mat-cell *matCellDef="let element"> {{element.tbage}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.tbage}} </td>
             </ng-container>
             <ng-container matColumnDef="tbaddress">
                 <th mat-header-cell *matHeaderCellDef> Address </th>
-                <td mat-cell *matCellDef="let element"> {{element.tbaddress}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.tbaddress}} </td>
             </ng-container>
 
             <ng-container matColumnDef="tbphone">
                 <th mat-header-cell *matHeaderCellDef> Phone </th>
-                <td mat-cell *matCellDef="let element"> {{element.tbphone}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.tbphone}} </td>
             </ng-container>
 
             <ng-container matColumnDef="action">
@@ -110,7 +105,7 @@
         </table>
 
         <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-            aria-label="Select page of periodic elements">
+            aria-label="Select page of periodic rows">
         </mat-paginator>
     </div>
 </div>

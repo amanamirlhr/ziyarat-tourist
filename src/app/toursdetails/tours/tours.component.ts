@@ -29,7 +29,7 @@ interface Tour {
   styleUrls: ['./tours.component.css']
 })
 export class ToursComponent {
-  displayedColumns: string[] = ['tourId','title', 'description', 'startDate', 'endDate', 'action'];
+  displayedColumns: string[] = ['tourId','title', 'description','country', 'startDate', 'endDate', 'action'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -38,14 +38,16 @@ export class ToursComponent {
   ngOnInit(): void {
     this.getTourList();
   }
-  // ngAfterViewInit() {
-  //   if (this.dataSource) {
-  //     this.dataSource.paginator = this.paginator;
-  //   }
-  // }
     openDialog() {
-    this.dialog.open(AddEditPopupToursComponent,{
+      const dialogRefOpen = this.dialog.open(AddEditPopupToursComponent,{
       width: '700px',
+    });
+    dialogRefOpen.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.getTourList();
+        }
+      },
     });
   }
   applyFilter(event: Event) {
@@ -56,46 +58,8 @@ export class ToursComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-  // getTourList() {
-  //   debugger;
-  //   this._tourService.getAllTour().subscribe({
-  //     next: (res) => {
-  //       if (Array.isArray(res)) {
-  //         this.dataSource = new MatTableDataSource(res || []);
-  //         this.dataSource.sort = this.sort;
-  //         this.dataSource.paginator = this.paginator;
-  //       } else {
-  //         console.error("API response is not an array:", res);
-  //       }
-  //     },
-  //     error: console.error,
-  //   });
-  // }
-  // getTourList() {
-  //   debugger
-  //   this._tourService.getAllTour().subscribe({
-  //     next: (res) => {
-  //       debugger
-  //       this.dataSource = new MatTableDataSource(res);
-  //       this.dataSource.sort = this.sort;
-  //       this.dataSource.paginator = this.paginator;
-  //     },
-  //     error: console.log,
-  //   });
-  // }
-  // getTourList() {
-  //   debugger;
-  //   this._tourService.getAllTour().subscribe({
-  //     next: (res) => {
-  //       debugger;
-  //       this.dataSource = new MatTableDataSource(res);
-  //       this.dataSource.sort = this.sort;
-  //       this.dataSource.paginator = this.paginator;
-  //     },
-  //     error: console.log,
-  //   });
-  // }
   getTourList() {
+    debugger
     this._tourService.getAllTour().subscribe({
       next: (res) => {
         if (res && Array.isArray(res.data)) {
@@ -115,6 +79,18 @@ export class ToursComponent {
       error: console.log,
     });
   }
-  
+  openEditForm(data: any) {
+    const dialogRef = this.dialog.open(AddEditPopupToursComponent,{
+      data,
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.getTourList();
+        }
+      },
+    });
+  }
 
 }

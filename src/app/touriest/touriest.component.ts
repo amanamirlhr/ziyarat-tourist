@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { TouriestService } from '../_services/touriest.service';
 
 
 @Component({
@@ -20,13 +21,17 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class TouriestComponent {
   displayedColumns: string[] = ['id', 'name', 'email', 'cnic', 'age', 'address', 'phone'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource!: MatTableDataSource<any>;
+  totalRecords: number = 0;
 
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
-  constructor(public dialog: MatDialog) { }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  constructor(public dialog: MatDialog,private _tourService: TouriestService,) { }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+  ngOnInit(): void {
+    this.getTouristList();
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -36,8 +41,29 @@ export class TouriestComponent {
       this.dataSource.paginator.firstPage();
     }
   }
+  getTouristList() {
+    debugger
+    this._tourService.getAllTouriest().subscribe({
+      next: (res) => {
+        if (res && Array.isArray(res.data)) {
+          debugger
+          const touriestData: Touriest[] = res.data;
+           this.totalRecords = touriestData.length;
+          this.dataSource = new MatTableDataSource(touriestData);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        } else {
+          console.error("API response does not contain an array under 'data':", res);
+        }
+      },
+      error: console.log,
+    });
+  }
+  getRowIndex(row: any): number {
+    return this.dataSource.filteredData.indexOf(row) + 1;
+  }
 }
-export interface PeriodicElement {
+export interface Touriest {
   id: number;
   name: string;
   email: string;
@@ -46,27 +72,3 @@ export interface PeriodicElement {
   address: string;
   phone: string;
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { id: 1, name: "Asad Abbas", email: 'asad@gmail.com', cnic: "35202-8763982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 2, name: "Aman Ali", email: 'aman@gmail.com', cnic: "35202-8763983-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 3, name: "Qasim", email: 'qasim@gmail.com', cnic: "35202-8763984-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 4, name: "Ahmad", email: 'ahmad@gmail.com', cnic: "35202-8763985-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 5, name: "Mahad Fayyaz", email: 'mahad@gmail.com', cnic: "35202-2763982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 6, name: "Muzamil Irshad", email: 'muzamil@gmail.com', cnic: "35202-2763982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 7, name: "Anas Amir", email: 'anas@gmail.com', cnic: "35202-8763984-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 8, name: "Amir Sohail", email: 'amir@gmail.com', cnic: "35202-8763282-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 9, name: "Ayaz Qasir", email: 'ayaz@gmail.com', cnic: "35202-8763932-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 10, name: "Abdullah", email: 'abdullah@gmail.com', cnic: "35202-8783982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 11, name: "Bilal", email: 'bilal@gmail.com', cnic: "35202-8763983-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 12, name: "Tayyab", email: 'tayyab@gmail.com', cnic: "35202-8763582-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 13, name: "Imran", email: 'imran@gmail.com', cnic: "35202-8763986-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 14, name: "Zubair", email: 'zubair@gmail.com', cnic: "35202-8763482-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 15, name: "Shakeel", email: 'shakeel@gmail.com', cnic: "35202-8763982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 16, name: "Anees", email: 'anees@gmail.com', cnic: "35202-8763984-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 17, name: "Ahad", email: 'ahad@gmail.com', cnic: "35202-8763984-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 18, name: "Umair", email: 'umair@gmail.com', cnic: "35202-8763482-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 19, name: "Nafees", email: 'nafees@gmail.com', cnic: "35202-8743982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 20, name: "Farooq", email: 'farooq@gmail.com', cnic: "35202-8743982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-  { id: 21, name: "Zohaib Nadeem", email: 'zohaib@gmail.com', cnic: "35202-8563982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-];

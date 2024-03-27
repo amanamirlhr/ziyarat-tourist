@@ -1,24 +1,25 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
-import {  MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatGridListModule } from '@angular/material/grid-list';
-import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { TouristService } from 'src/app/_services/tourist.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-add-existing-popup-touriest',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, FormsModule, ReactiveFormsModule,MatTableModule,MatCheckboxModule, MatSortModule, NgFor,MatPaginatorModule, MatSelectModule, MatGridListModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule, MatInputModule, MatDialogModule],
+  imports: [CommonModule, MatButtonModule, FormsModule, ReactiveFormsModule, MatTableModule, MatCheckboxModule, MatSortModule, NgFor, MatPaginatorModule, MatSelectModule, MatGridListModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule, MatInputModule, MatDialogModule],
   templateUrl: './add-existing-popup-touriest.component.html',
   styleUrls: ['./add-existing-popup-touriest.component.css']
 })
@@ -28,15 +29,13 @@ export class AddExistingPopupTouriestComponent {
   completeData: any[] = [];
   selectAll: boolean = false;
   selectMainItem: boolean = false
-  @Output() saveSelectedOptions = new EventEmitter<{tbname: string, tbemail: string, tbcnic: string, tbage: string, tbaddress: string, tbphone: string}[]>();
+  @Output() saveSelectedOptions = new EventEmitter<{ tbname: string, tbemail: string, tbcnic: string, tbage: string, tbaddress: string, tbphone: string }[]>();
 
-  displayedColumns: string[] = ['id', 'name', 'email', 'cnic', 'age', 'address', 'phone'];
+  displayedColumns: string[] = ['select', 'id', 'name', 'email', 'cnic', 'age', 'address', 'phone'];
   dataSource = new MatTableDataSource<any>();
 
-  constructor(private _existingUser: TouristService,) { }
+  constructor(private _existingUser: TouristService,private dialogRef: MatDialogRef<AddExistingPopupTouriestComponent>) { }
   ngOnInit(): void {
-    // this.getExistingUserdata();
-    // this.getExistingUserList();
     console.log(this.selectedOptions)
     this.getExistingTouristList()
   }
@@ -46,12 +45,14 @@ export class AddExistingPopupTouriestComponent {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
+  selection = new SelectionModel<PeriodicElement>(true, []);
+
   getExistingUserdata() {
     this._existingUser.getTouriestName().subscribe((data: any[]) => {
       console.log("this is a get api :", data)
-      this.options = data.map((item) => item.name);
+      this.options = data.map((item) => ({ ...item }));
       this.completeData = data;
-      console.log("this is under completeData",this.completeData)
+      console.log("this is under completeData", this.completeData)
     });
   }
   applyFilter(event: Event) {
@@ -62,11 +63,11 @@ export class AddExistingPopupTouriestComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-    getExistingTouristList() {
-    debugger
+  getExistingTouristList() {
+    
     this._existingUser.getTouriestName().subscribe({
       next: (res) => {
-        debugger
+        
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -74,43 +75,48 @@ export class AddExistingPopupTouriestComponent {
       error: console.log,
     });
   }
+  getRowIndex(row: any): number {
+    return this.dataSource.filteredData.indexOf(row) + 1;
+  }
   save() {
-    debugger
-    const selectedRows = this.options
-      .filter((data) => this.selectedOptions.includes(data))
-      .map((selectedOption) => {
-        console.log("this is under selectedOption", selectedOption);
-  
-        // Find the corresponding row data for the selected option from dataSource
-        const rowData = this.dataSource.data.find((item) => item.name === selectedOption);
-  
-        // Map the desired properties
-        return {
-          tbname: rowData.tbname,
-          tbemail: rowData.tbemail,
-          tbcnic: rowData.tbcnic,
-          tbage: rowData.tbage,
-          tbaddress: rowData.tbaddress,
-          tbphone: rowData.tbphone,
-        };
-      });
-  
-    console.log("this is under selectedRows", selectedRows);
-  
-    // Now you have an array of objects with the desired properties, emit it
+    const selectedRows = this.dataSource.data.filter(row => this.selection.isSelected(row)).map((selectedOption) => {
+      
+      return {
+        tbname: selectedOption.name,
+        tbemail: selectedOption.email,
+        tbcnic: selectedOption.cnic,
+        tbage: selectedOption.age,
+        tbaddress: selectedOption.address,
+        tbphone: selectedOption.phone,
+      };
+    });
     this.saveSelectedOptions.emit(selectedRows);
-    console.log("this is saveSelectedOptions", this.saveSelectedOptions);
+    this.dialogRef.close();
   }
-  
-  toggleSelectAll() {
-    this.selectAll = !this.selectAll
+
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
   }
-  disabledSelectAll(){
-    this.selectMainItem = !this.selectAll
+
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  checkboxLabel(row?: PeriodicElement): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
 }
 export interface PeriodicElement {
+  position: number;
   name: string;
   email: string;
   cnic: string;
@@ -118,27 +124,3 @@ export interface PeriodicElement {
   address: string;
   phone: string;
 }
-// const ELEMENT_DATA: PeriodicElement[] = [
-//   { name: "Asad Abbas", email: 'asad@gmail.com', cnic: "35202-8763982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Aman Ali", email: 'aman@gmail.com', cnic: "35202-8763983-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Qasim", email: 'qasim@gmail.com', cnic: "35202-8763984-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Ahmad", email: 'ahmad@gmail.com', cnic: "35202-8763985-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Mahad Fayyaz", email: 'mahad@gmail.com', cnic: "35202-2763982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Muzamil Irshad", email: 'muzamil@gmail.com', cnic: "35202-2763982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Anas Amir", email: 'anas@gmail.com', cnic: "35202-8763984-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Amir Sohail", email: 'amir@gmail.com', cnic: "35202-8763282-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Ayaz Qasir", email: 'ayaz@gmail.com', cnic: "35202-8763932-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Abdullah", email: 'abdullah@gmail.com', cnic: "35202-8783982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Bilal", email: 'bilal@gmail.com', cnic: "35202-8763983-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Tayyab", email: 'tayyab@gmail.com', cnic: "35202-8763582-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Imran", email: 'imran@gmail.com', cnic: "35202-8763986-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Zubair", email: 'zubair@gmail.com', cnic: "35202-8763482-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Shakeel", email: 'shakeel@gmail.com', cnic: "35202-8763982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Anees", email: 'anees@gmail.com', cnic: "35202-8763984-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Ahad", email: 'ahad@gmail.com', cnic: "35202-8763984-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Umair", email: 'umair@gmail.com', cnic: "35202-8763482-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Nafees", email: 'nafees@gmail.com', cnic: "35202-8743982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Farooq", email: 'farooq@gmail.com', cnic: "35202-8743982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-//   { name: "Zohaib Nadeem", email: 'zohaib@gmail.com', cnic: "35202-8563982-1", age: '28', address: 'Mugha Pura Lahore Pakistan', phone: '+923170432287' },
-// ];
-

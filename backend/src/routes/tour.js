@@ -9,7 +9,7 @@ tourRouter
 
 tourRouter
   .route("/updateTour/:id")
-  .put([authentication], tourController.updateTour);
+  .put(tourController.updateTour);
 
 tourRouter
   .route("/deleteTour/:id")

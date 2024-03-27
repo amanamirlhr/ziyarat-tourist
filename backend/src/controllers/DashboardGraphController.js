@@ -2,15 +2,15 @@ const { Op } = require("sequelize");
 const db = require("../database/models");
 const { Tourist } = require("../database/models");
 const sql = require('mssql');
-// const config = require('../config/database');
+
 
 const config = {
   user: 'aman',
-  password: 'aman',
+  password: 'amir',
   server: 'DESKTOP-HBFVMP3',
   database: 'management_development',
   options: {
-    encrypt: true, // Use this if you're on Windows Azure
+    encrypt: true,
     trustServerCertificate: true,
   },
 };

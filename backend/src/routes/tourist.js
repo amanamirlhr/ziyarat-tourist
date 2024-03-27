@@ -21,7 +21,7 @@ touristRouter
 
 touristRouter
   .route("/getTourists")
-  .get([authentication], touristController.getTourists);
+  .get(touristController.getTourists);
 touristRouter
   .route("/getTouriestName")
   .get(touristController.getTouriestName);

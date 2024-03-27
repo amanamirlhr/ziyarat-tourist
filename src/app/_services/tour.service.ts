@@ -16,4 +16,7 @@ export class TourService {
   postTour(data: any): Observable<any> {
     return this.http.post(API_URL + 'createTour',data);
   }
+  updateTour(data: any, tourId: string): Observable<any> {
+    return this.http.put(API_URL + 'updateTour/' + tourId, data);
+  }
 }

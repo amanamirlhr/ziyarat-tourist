@@ -30,7 +30,7 @@ export class AddEditPopupToursComponent implements OnInit {
   selectcountry: string = '';
   startDate: string = '';
   endDate: string = '';
-  // empform: FormGroup;
+  tourId: string = '';
   empform = new FormGroup({
 
     title: new FormControl('', Validators.compose([Validators.required])),
@@ -42,22 +42,15 @@ export class AddEditPopupToursComponent implements OnInit {
   });
   constructor(    private _fb: FormBuilder,
     private _getCountryService: CountryService, private _posTour: TourService, private _dialogRef: MatDialogRef<AddEditPopupToursComponent>, @Inject(MAT_DIALOG_DATA) public data: any,) {
-    // this.empform = this._fb.group({
-    //   title: '',
-    //   ladescriptionstName: '',
-    //   selectcountry: '',
-    //   startdate: '',
-    //   enddate: ''
-    // });
+ 
    }
 
   ngOnInit(): void {
     this.getEmployeeList();
-    this.empform.patchValue(this.data);
+    if (this.data) {
+      this.empform.patchValue(this.data);
+    }
   }
-
-  // dateStart = new FormControl(new Date());
-  // dateEnd = new FormControl(new Date());
   getEmployeeList() {
     debugger;
     this._getCountryService.getCountries().subscribe((data: any[]) => {
@@ -67,6 +60,18 @@ export class AddEditPopupToursComponent implements OnInit {
   }
   onFormSubmit() {
     if (this.empform.valid) {
+      debugger
+      if (this.data && this.tourId) {
+        this._posTour.updateTour(this.empform.value, this.tourId,).subscribe({
+            next: (val: any) => {
+              this._dialogRef.close(true);
+            },
+            error: (err: any) => {
+              console.error(err);
+            },
+          });
+      }
+      else{
         this._posTour.postTour(this.empform.value).subscribe({
           next: (val: any) => {
             this._dialogRef.close(true);
@@ -75,6 +80,8 @@ export class AddEditPopupToursComponent implements OnInit {
             console.error(err);
           },
         });
+      }
+       
       }
   }
 }

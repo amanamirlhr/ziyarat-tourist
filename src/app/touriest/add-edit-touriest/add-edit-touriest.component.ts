@@ -14,6 +14,7 @@ import { AddExistingPopupTouriestComponent } from '../add-existing-popup-touries
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TouristService } from 'src/app/_services/tourist.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-edit-touriest',
@@ -23,9 +24,6 @@ import { TouristService } from 'src/app/_services/tourist.service';
   styleUrls: ['./add-edit-touriest.component.css']
 })
 export class AddEditTouriestComponent {
-
-  // displayedColumns: string[] = ['userId', 'firstName', 'lastName', 'email', 'password', 'phone', 'address'];
-
   name: string = '';
   email: string = '';
   cnic: string = '';
@@ -52,36 +50,24 @@ export class AddEditTouriestComponent {
 
   openDialog() {
     const dialogRef = this.dialog.open(AddExistingPopupTouriestComponent);
-    dialogRef.componentInstance.saveSelectedOptions.subscribe((selectedOptions: string[]) => {
-      console.log("this is a selected option:", selectedOptions);
-  
-      // Fetch data for selectedOptions from the service
-      selectedOptions.forEach(() => {
-        this._existingUser.getTouriestName().subscribe({
-          next: (optionData: any) => {
-            // Add the fetched data to dataSource.data
-            this.dataSource.data.push({
-              tbname: optionData.name,
-              tbemail: optionData.email,
-              tbcnic: optionData.cnic,
-              tbage: optionData.age,
-              tbaddress: optionData.address,
-              tbphone: optionData.phone,
-            });
-        
-            // Refresh the MatTableDataSource
-            this.dataSource.data = [...this.dataSource.data];
-            console.log("this is datasource",this.dataSource.data)
-          },
-          error: (error: any) => {
-            // Handle error if needed
-            console.error('Error fetching data:', error);
-          },
-          complete: () => {
-            // Handle completion if needed
-          },
-        });
+    dialogRef.componentInstance.saveSelectedOptions.subscribe((selectedOptions: any[]) => {
+      selectedOptions.forEach(option => {
+        if(this.dataSource.data.find(data => data.tbcnic === option.tbcnic)){
+          Swal.fire("Record already added");
+        }
+        else{
+          this.dataSource.data.push({
+            tbname: option.tbname,
+            tbemail: option.tbemail,
+            tbcnic: option.tbcnic,
+            tbage: option.tbage,
+            tbaddress: option.tbaddress,
+            tbphone: option.tbphone
+          });
+        }
       });
+      this.dataSource.data = [...this.dataSource.data];
+    
     });
   }
 
@@ -89,33 +75,27 @@ export class AddEditTouriestComponent {
     const index = this.dataSource.data.indexOf(row);
     if (index >= 0) {
       this.dataSource.data.splice(index, 1);
-      this.dataSource._updateChangeSubscription(); // Notify the data source about the change
+      this.dataSource._updateChangeSubscription();
     }
   }
   addOrUpdateData() {
     if (this.isEditMode) {
       if (this.selectedRow) {
-        // Update the selected row with the edited data
         this.selectedRow.tbname = this.name;
         this.selectedRow.tbemail = this.email;
         this.selectedRow.tbcnic = this.cnic;
         this.selectedRow.tbage = this.age;
         this.selectedRow.tbaddress = this.address;
         this.selectedRow.tbphone = this.phone;
-
-        // Clear the input fields and reset the selected row
         this.clearFields();
         this.isEditMode = false;
       }
     } else {
       if (this.name && this.email && this.cnic && this.age && this.address && this.phone) {
-        // Push data to the MatTableDataSource
         this.dataSource.data.push({ tbname: this.name, tbemail: this.email, tbcnic: this.cnic, tbage: this.age, tbaddress: this.address, tbphone: this.phone });
 
-        // Refresh the MatTableDataSource
         this.dataSource.data = [...this.dataSource.data];
 
-        // Clear input fields
         this.name = '';
         this.email = '';
         this.cnic = '';
@@ -126,7 +106,6 @@ export class AddEditTouriestComponent {
     }
   }
   editRow(row: { tbname: string, tbemail: string, tbcnic: string, tbage: string, tbaddress: string, tbphone: string }) {
-    // Copy data from the selected row to the input fields
     this.name = row.tbname;
     this.email = row.tbemail;
     this.cnic = row.tbcnic;
@@ -134,7 +113,6 @@ export class AddEditTouriestComponent {
     this.address = row.tbaddress;
     this.phone = row.tbphone;
 
-    // Store the selected row for later use
     this.selectedRow = row;
     this.isEditMode = true;
   }

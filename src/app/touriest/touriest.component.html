@@ -13,46 +13,42 @@
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
 
-    <!-- Position Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      <td mat-cell *matCellDef="let row">{{ getRowIndex(row) }}</td>
     </ng-container>
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let row"> {{row.name}} </td>
     </ng-container>
 
-    <!-- Name Column -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      <td mat-cell *matCellDef="let row"> {{row.email}} </td>
     </ng-container>
 
-    <!-- Weight Column -->
     <ng-container matColumnDef="cnic">
       <th mat-header-cell *matHeaderCellDef> CNIC </th>
-      <td mat-cell *matCellDef="let element"> {{element.cnic}} </td>
+      <td mat-cell *matCellDef="let row"> {{row.cnic}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
     <ng-container matColumnDef="age">
       <th mat-header-cell *matHeaderCellDef> Age </th>
-      <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+      <td mat-cell *matCellDef="let row"> {{row.age}} </td>
     </ng-container>
     <ng-container matColumnDef="address">
       <th mat-header-cell *matHeaderCellDef> Address </th>
-      <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+      <td mat-cell *matCellDef="let row"> {{row.address}} </td>
     </ng-container>
     <ng-container matColumnDef="phone">
       <th mat-header-cell *matHeaderCellDef> Phone </th>
-      <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+      <td mat-cell *matCellDef="let row"> {{row.phone}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[20, 30, 50]" showFirstLastButtons aria-label="Select page of periodic elements">
+  <mat-paginator [pageSizeOptions]="[20, 30, 50]" showFirstLastButtons aria-label="Select page of periodic rows">
   </mat-paginator>
 </div>
