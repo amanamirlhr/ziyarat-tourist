@@ -13,7 +13,7 @@ tourRouter
 
 tourRouter
   .route("/deleteTour/:id")
-  .delete([authentication], tourController.deleteTour);
+  .delete(tourController.deleteTour);
 
 tourRouter
   .route("/getTour/:id")

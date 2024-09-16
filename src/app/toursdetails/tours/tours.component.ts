@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -7,15 +7,17 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddEditPopupToursComponent } from '../add-edit-popup-tours/add-edit-popup-tours.component';
 import { MatIconModule } from '@angular/material/icon';
 import { TourService } from 'src/app/_services/tour.service';
+import Swal from 'sweetalert2';
 
 interface Tour {
   tourId: number;
   title: string;
   description: string;
+  country: string;
   startDate: string;
   endDate: string;
 }
@@ -24,27 +26,49 @@ interface Tour {
   selector: 'app-tours',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, MatFormFieldModule,MatIconModule, MatDialogModule, MatButtonModule, MatGridListModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
+  imports: [CommonModule, MatFormFieldModule, MatIconModule, MatDialogModule, MatButtonModule, MatGridListModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
   templateUrl: './tours.component.html',
   styleUrls: ['./tours.component.css']
 })
 export class ToursComponent {
-  displayedColumns: string[] = ['tourId','title', 'description','country', 'startDate', 'endDate', 'action'];
+
+  title: string = '';
+  description: string = '';
+  country: string = '';
+  startDate: string = '';
+  endDate: string = '';
+  tourId: string = '';
+
+  displayedColumns: string[] = ['tourId', 'title', 'description', 'country', 'startDate', 'endDate', 'action'];
   dataSource!: MatTableDataSource<any>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  constructor(public dialog: MatDialog,private _tourService: TourService,) {}
+  constructor(public dialog: MatDialog, private _tourService: TourService, private _tourServiceDelete: TourService) { }
   ngOnInit(): void {
     this.getTourList();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
-    openDialog() {
-      const dialogRefOpen = this.dialog.open(AddEditPopupToursComponent,{
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+    
+  openDialog() {
+    const dialogRefOpen = this.dialog.open(AddEditPopupToursComponent, {
       width: '700px',
     });
     dialogRefOpen.afterClosed().subscribe({
       next: (val) => {
         if (val) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Record added successfully",
+            showConfirmButton: false,
+            timer: 1500
+          });
           this.getTourList();
         }
       },
@@ -62,6 +86,7 @@ export class ToursComponent {
     debugger
     this._tourService.getAllTour().subscribe({
       next: (res) => {
+        debugger
         if (res && Array.isArray(res.data)) {
           const tourData: Tour[] = res.data;
           tourData.forEach(row => {
@@ -80,7 +105,7 @@ export class ToursComponent {
     });
   }
   openEditForm(data: any) {
-    const dialogRef = this.dialog.open(AddEditPopupToursComponent,{
+    const dialogRef = this.dialog.open(AddEditPopupToursComponent, {
       data,
     });
 
@@ -91,6 +116,40 @@ export class ToursComponent {
         }
       },
     });
+  }
+  openDeleteForm(row: any) {
+    debugger
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+          debugger 
+          this._tourServiceDelete.deleteTour(row).subscribe({
+            next: (val: any) => {
+              debugger
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+              this.getTourList();
+            },
+            error: (err: any) => {
+              console.error(err);
+            },
+          });
+         
+        }
+    });
+  }
+  getRowIndex(row: any): number {
+    return this.dataSource.filteredData.indexOf(row) + 1;
   }
 
 }

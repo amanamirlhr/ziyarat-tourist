@@ -20,7 +20,7 @@ import { TouriestService } from '../_services/touriest.service';
   styleUrls: ['./touriest.component.css']
 })
 export class TouriestComponent {
-  displayedColumns: string[] = ['id', 'name', 'email', 'cnic', 'age', 'address', 'phone'];
+  displayedColumns: string[] = ['id', 'name', 'email', 'cnic', 'age', 'address', 'phone','action'];
   dataSource!: MatTableDataSource<any>;
   totalRecords: number = 0;
 
@@ -41,12 +41,14 @@ export class TouriestComponent {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  editRow(row: any){
+console.log("this is a edit mode", row)
+  }
   getTouristList() {
-    debugger
     this._tourService.getAllTouriest().subscribe({
       next: (res) => {
         if (res && Array.isArray(res.data)) {
-          debugger
           const touriestData: Touriest[] = res.data;
            this.totalRecords = touriestData.length;
           this.dataSource = new MatTableDataSource(touriestData);

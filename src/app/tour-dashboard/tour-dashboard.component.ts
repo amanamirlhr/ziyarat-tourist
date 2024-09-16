@@ -15,6 +15,7 @@ import {
   ApexResponsive
 } from "ng-apexcharts";
 import { DashboardGraphService } from '../_services/dashboardgraph.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tour-dashboard',
@@ -59,11 +60,9 @@ export class TourDashboardComponent implements OnInit {
     this.getAllTour();
     this.getAllCountry();
   }
-  constructor(private _touriestByMonth: DashboardGraphService,) { }
+  constructor(private _touriestByMonth: DashboardGraphService) { }
   getExistingUserdata() {
-    debugger
     this._touriestByMonth.getTouristsByMonth().subscribe((data: any[]) => {
-      debugger
       // console.log("this is a get api :", data)
       // this.touriestchartoptions(  // <-- this call *must* be inside the subscription callback
       //   data.map((item: any) => item.MonthYear),
@@ -180,8 +179,8 @@ export class TourDashboardComponent implements OnInit {
         }
       }
   };
+
   public touriestchartoptions(MonthYear: any[], TouriestCount: any[]): void {
-    debugger
     this.touriestseries = [
       {
         name: "basic",
@@ -204,5 +203,14 @@ export class TourDashboardComponent implements OnInit {
         categories: MonthYear
       }
   }
+  // navigateToTourist(): void {
+  //   this.router.navigateByUrl('/touriest');
+  // }
+  // navigateToTours(): void {
+  //   this.router.navigateByUrl('/tours');
+  // }
+  // navigateToCountries(): void {
+  //   this.router.navigateByUrl('/countries');
+  // }
 
 }

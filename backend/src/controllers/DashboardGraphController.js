@@ -6,7 +6,7 @@ const sql = require('mssql');
 
 const config = {
   user: 'aman',
-  password: 'amir',
+  password: 'abcd@1234',
   server: 'DESKTOP-HBFVMP3',
   database: 'management_development',
   options: {

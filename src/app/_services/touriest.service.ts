@@ -13,10 +13,8 @@ export class TouriestService {
   getAllTouriest(): Observable<any> {
     return this.http.get(API_URL + 'getTourists');
   }
-//   postTour(data: any): Observable<any> {
-//     return this.http.post(API_URL + 'createTour',data);
-//   }
-//   updateTour(data: any, tourId: string): Observable<any> {
-//     return this.http.put(API_URL + 'updateTour/' + tourId, data);
-//   }
+  postTourist(data: any): Observable<any> {
+    debugger
+    return this.http.post(API_URL + 'createTourist',data);
+  }
 }

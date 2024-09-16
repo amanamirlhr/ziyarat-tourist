@@ -5,7 +5,7 @@ const { authentication } = require("../middlewares/auth.middleware");
 
 touristRouter
   .route("/createTourist")
-  .post([authentication], touristController.createTourist);
+  .post(touristController.createTourist);
 
 touristRouter
   .route("/updateTourist/:userId")

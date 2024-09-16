@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,9 +12,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { AddExistingPopupTouriestComponent } from '../add-existing-popup-touriest/add-existing-popup-touriest.component';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TouristService } from 'src/app/_services/tourist.service';
 import Swal from 'sweetalert2';
+import { TouriestService } from 'src/app/_services/touriest.service';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-add-edit-touriest',
@@ -30,6 +32,8 @@ export class AddEditTouriestComponent {
   age: string = '';
   address: string = '';
   phone: string = '';
+  tourId: string = '1';
+  userId: string = '1';
   isEditMode: boolean = false;
   empform = new FormGroup({
 
@@ -41,13 +45,16 @@ export class AddEditTouriestComponent {
     phone: new FormControl('', Validators.compose([Validators.required, Validators.maxLength(11)])),
 
   });
-  dataSource: MatTableDataSource<{ tbname: string, tbemail: string, tbcnic: string, tbage: string, tbaddress: string, tbphone: string }>;
+  dataSource: MatTableDataSource<{ tourId: string, userId: string, tbname: string, tbemail: string, tbcnic: string, tbage: string, tbaddress: string, tbphone: string }>;
   selectedRow!: { tbname: string, tbemail: string, tbcnic: string, tbage: string, tbaddress: string, tbphone: string } | null;
-
-  constructor(public dialog: MatDialog, private _existingUser: TouristService,) {
-    this.dataSource = new MatTableDataSource<{ tbname: string, tbemail: string, tbcnic: string, tbage: string, tbaddress: string, tbphone: string }>([]);
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  constructor(public dialog: MatDialog, private _existingUser: TouristService,private _tourService: TouriestService,) {
+    this.dataSource = new MatTableDataSource<{ tourId: string, userId: string, tbname: string, tbemail: string, tbcnic: string, tbage: string, tbaddress: string, tbphone: string }>([]);
   }
-
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
   openDialog() {
     const dialogRef = this.dialog.open(AddExistingPopupTouriestComponent);
     dialogRef.componentInstance.saveSelectedOptions.subscribe((selectedOptions: any[]) => {
@@ -57,6 +64,8 @@ export class AddEditTouriestComponent {
         }
         else{
           this.dataSource.data.push({
+            userId: option.userId,
+            tourId: option.tourId, 
             tbname: option.tbname,
             tbemail: option.tbemail,
             tbcnic: option.tbcnic,
@@ -71,7 +80,7 @@ export class AddEditTouriestComponent {
     });
   }
 
-  deleteRow(row: { tbname: string, tbemail: string, tbcnic: string, tbage: string, tbaddress: string, tbphone: string }) {
+  deleteRow(row: { tourId: string, userId: string, tbname: string, tbemail: string, tbcnic: string, tbage: string, tbaddress: string, tbphone: string }) {
     const index = this.dataSource.data.indexOf(row);
     if (index >= 0) {
       this.dataSource.data.splice(index, 1);
@@ -91,8 +100,8 @@ export class AddEditTouriestComponent {
         this.isEditMode = false;
       }
     } else {
-      if (this.name && this.email && this.cnic && this.age && this.address && this.phone) {
-        this.dataSource.data.push({ tbname: this.name, tbemail: this.email, tbcnic: this.cnic, tbage: this.age, tbaddress: this.address, tbphone: this.phone });
+      if (this.tourId && this.userId && this.name && this.email && this.cnic && this.age && this.address && this.phone) {
+        this.dataSource.data.push({ tourId: this.tourId, userId:  this.userId,  tbname: this.name, tbemail: this.email, tbcnic: this.cnic, tbage: this.age, tbaddress: this.address, tbphone: this.phone });
 
         this.dataSource.data = [...this.dataSource.data];
 
@@ -125,5 +134,17 @@ export class AddEditTouriestComponent {
     this.address = '';
     this.phone = '';
     this.selectedRow = null;
+  }
+  save() {
+    debugger
+    this._tourService.postTourist(this.dataSource.data).subscribe({
+      next: (val: any) => {
+        debugger
+        // this._dialogRef.close(true);
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+    });
   }
 }

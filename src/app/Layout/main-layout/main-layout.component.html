@@ -13,25 +13,25 @@
     <mat-sidenav #sidenav class="Touriest_sidenav" mode="side" opened="true" (mouseenter)="mouseenter()"
         (mouseleave)="mouseleave()">
         <mat-nav-list>
-            <mat-list-item class="parent">
-                <i class="fa fa-tachometer sidebaricons"></i> <span class="full-width" *ngIf="isExpanded || isShowing"><a
-                        mat-list-item class="sidebar_primary_color" href="/dashboard"> Dashboard</a></span>
+            <mat-list-item class="parent" [ngClass]="{ 'active': activeItem === '/' }">
+                <span class="full-width" *ngIf="isExpanded || isShowing"><a
+                        mat-list-item class="sidebar_primary_color" routerLink="/" (click)="setActiveItem('/')"><i class="fa fa-tachometer me-3 sidebaricons"></i> Dashboard</a></span>
             </mat-list-item>
-            <mat-list-item class="parent">
-                <i class="fa fa-plane sidebaricons"></i> <span class="full-width" *ngIf="isExpanded || isShowing"><a
-                        mat-list-item class="sidebar_primary_color" href="/tours"> Tours</a></span>
+            <mat-list-item class="parent mt-3" [ngClass]="{ 'active': activeItem === 'tours' }">
+                <span class="full-width" *ngIf="isExpanded || isShowing"><a
+                        mat-list-item class="sidebar_primary_color" routerLink="/tours" (click)="setActiveItem('tours')"><i class="fa fa-plane me-3 sidebaricons"></i>  Tours</a></span>
             </mat-list-item>
-            <mat-list-item class="parent">
-                <i class="fa fa-users sidebaricons"></i> <span class="full-width" *ngIf="isExpanded || isShowing"><a
-                        mat-list-item class="sidebar_primary_color" href="/touriest">Tourist</a></span>
+            <mat-list-item class="parent mt-3" [ngClass]="{ 'active': activeItem === 'touriest' }">
+                <span class="full-width" *ngIf="isExpanded || isShowing"><a
+                        mat-list-item class="sidebar_primary_color" routerLink="/touriest" (click)="setActiveItem('touriest')"><i class="fa fa-users me-3 sidebaricons"></i> Tourist</a></span>
             </mat-list-item>
-            <mat-list-item class="parent">
-                <i class="fa fa-globe sidebaricons"></i> <span class="full-width" *ngIf="isExpanded || isShowing"><a
-                        mat-list-item class="sidebar_primary_color" href="/countries">Countries</a></span>
+            <mat-list-item class="parent mt-3" [ngClass]="{ 'active': activeItem === 'countries' }">
+                <span class="full-width" *ngIf="isExpanded || isShowing"><a
+                        mat-list-item class="sidebar_primary_color" routerLink="/countries" (click)="setActiveItem('countries')"><i class="fa fa-globe me-3 sidebaricons"></i> Countries</a></span>
             </mat-list-item>
-            <mat-list-item class="parent">
-                <i class="fa fa-credit-card-alt sidebaricons"></i> <span class="full-width" *ngIf="isExpanded || isShowing"><a
-                        mat-list-item class="sidebar_primary_color" href="/expenses">Expenses</a></span>
+            <mat-list-item class="parent mt-3" [ngClass]="{ 'active': activeItem === 'expenses' }">
+                <span class="full-width" *ngIf="isExpanded || isShowing"><a
+                        mat-list-item class="sidebar_primary_color" routerLink="/expenses" (click)="setActiveItem('expenses')"><i class="fa fa-credit-card-alt me-3 sidebaricons"></i> Expenses</a></span>
             </mat-list-item>
         </mat-nav-list>
         <mat-nav-list>

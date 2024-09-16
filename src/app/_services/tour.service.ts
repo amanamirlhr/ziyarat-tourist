@@ -19,4 +19,7 @@ export class TourService {
   updateTour(data: any, tourId: string): Observable<any> {
     return this.http.put(API_URL + 'updateTour/' + tourId, data);
   }
+  deleteTour(tourId: string): Observable<any> {
+    return this.http.delete(API_URL + 'deleteTour/' + tourId);
+  }
 }

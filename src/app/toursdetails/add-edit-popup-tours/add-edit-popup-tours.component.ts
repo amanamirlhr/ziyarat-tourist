@@ -52,17 +52,16 @@ export class AddEditPopupToursComponent implements OnInit {
     }
   }
   getEmployeeList() {
-    debugger;
     this._getCountryService.getCountries().subscribe((data: any[]) => {
-      debugger
       this.options = data.map((item) => item.name);
     });
   }
   onFormSubmit() {
     if (this.empform.valid) {
       debugger
-      if (this.data && this.tourId) {
-        this._posTour.updateTour(this.empform.value, this.tourId,).subscribe({
+      const formData = this.empform.value;
+      if (this.data && this.data.tourId) {
+        this._posTour.updateTour(formData, this.data.tourId,).subscribe({
             next: (val: any) => {
               this._dialogRef.close(true);
             },
@@ -72,7 +71,7 @@ export class AddEditPopupToursComponent implements OnInit {
           });
       }
       else{
-        this._posTour.postTour(this.empform.value).subscribe({
+        this._posTour.postTour(formData).subscribe({
           next: (val: any) => {
             this._dialogRef.close(true);
           },
@@ -85,7 +84,6 @@ export class AddEditPopupToursComponent implements OnInit {
       }
   }
 }
-function provideNativeDateAdapter(): import("@angular/core").Provider {
-  throw new Error('Function not implemented.');
-}
-
+// function provideNativeDateAdapter(): import("@angular/core").Provider {
+//   throw new Error('Function not implemented.');
+// }

@@ -30,10 +30,13 @@ export class MainLayoutComponent {
   showSubmenu: boolean = false;
   isShowing = false;
   showSubSubMenu: boolean = false;
+  activeItem: string | null = null;
 
 
   constructor(public dialog: MatDialog) {}
-
+  ngOnInit(): void {
+    this.setActiveItem('/'); // Set dashboard as active initially
+  }
   mouseenter() {
     if (!this.isExpanded) {
       this.isShowing = true;
@@ -41,12 +44,12 @@ export class MainLayoutComponent {
   }
   openDialog() {
     const dialogRef = this.dialog.open(UserDialogComponent, {restoreFocus: false});
-
-    // Manually restore focus to the menu trigger since the element that
-    // opens the dialog won't be in the DOM any more when the dialog closes.
     dialogRef.afterClosed().subscribe(() => this.menuTrigger.focus());
   }
 
+  setActiveItem(item: string): void {
+    this.activeItem = item;
+  }
   mouseleave() {
     if (!this.isExpanded) {
       this.isShowing = false;

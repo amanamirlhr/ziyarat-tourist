@@ -67,7 +67,7 @@ const updateTour = async (req, res) => {
         description: tourObj.description,
         startDate: tourObj.startDate,
         endDate: tourObj.endDate,
-        CreatedById: req.user.userId,
+        // CreatedById: req.user.userId,
       },
       {
         where: {
@@ -75,6 +75,7 @@ const updateTour = async (req, res) => {
         },
       }
     );
+    console.log("this is a result update console:", resultUpdate)
 
     let esixtingTourCountries = await TourCountry.findAll({
       raw: true,
